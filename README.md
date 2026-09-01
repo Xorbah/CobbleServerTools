@@ -61,4 +61,3 @@ The next repository milestone should be to fold the recovered base implementatio
 `dist/CobbleServerTools-1.21.1-rc28.jar`
 
 This is the same functional RC28 build previously produced under the KantoNPCs filename; only the repository/distribution filename here uses the new CobbleServerTools project name. The internal mod ID remains `kantonpcs` for compatibility.
-

@@ -1,0 +1,10 @@
+.gradle/
+build/
+out/
+.idea/
+*.iml
+*.class
+stubclasses*/
+rc*classes/
+testclasses*/
+.DS_Store

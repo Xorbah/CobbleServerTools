@@ -1,0 +1,24 @@
+RC27 validation summary
+=======================
+
+1. Java 21 compilation: PASS
+2. Rc27VariantSupportTest: PASS
+   - Alolan Vulpix formal FormData
+   - Fat Pikachu-style assigned choice feature
+   - formal-form + feature merge
+   - aspect-only resolver variant without FormData
+   - shiny + variant preview aspect coexistence
+   - variant property sanitization
+3. JAR ZIP integrity: PASS
+4. Metadata: 1.0.5-neoforge-port.6-rc27
+5. Bytecode verification: PASS
+   - SpeciesFeatures.getFeaturesFor(Species)
+   - ChoiceSpeciesFeatureProvider.isAspect()
+   - getKeys()/getChoices()/getAllAspects()/getDefault()
+   - RoamingVariantProperties persistence in roaming manager
+6. Supplied Fat Pika and Friends(2).zip structure inspected:
+   - 15 Pikachu species_additions forms
+   - assigned `fat` choice feature
+   - 16 choices including `no`
+   - `isAspect: true`, `aspectFormat: {{choice}}`
+   - model resolvers keyed by resulting aspects
