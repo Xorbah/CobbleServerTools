@@ -1,10 +1,8 @@
 .gradle/
 build/
+run/
 out/
 .idea/
 *.iml
-*.class
-stubclasses*/
-rc*classes/
-testclasses*/
-.DS_Store
+libs/*.jar
+!libs/README.md

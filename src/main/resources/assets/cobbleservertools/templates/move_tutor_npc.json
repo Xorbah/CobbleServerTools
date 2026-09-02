@@ -1,0 +1,17 @@
+{
+  "id": "move_tutor_npc",
+  "npcName": "Move Tutor",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/cientist 1.png",
+  "dialogId": "",
+  "seekPlayer": false,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": true,
+  "lookAtPlayer": true,
+  "tutorMoveId": "",
+  "rewardItemId": "",
+  "onVictoryCommand": "",
+  "rewardResetAlways": false
+}

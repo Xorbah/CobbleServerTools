@@ -1,0 +1,13 @@
+{
+  "id": "vending_machine",
+  "npcName": "",
+  "npcSize": 0.89,
+  "npcType": "WIDE",
+  "dialogId": "",
+  "seekPlayer": false,
+  "sitting": false,
+  "lockPosition": true,
+  "lookAtPlayer": false,
+  "shopItems": [],
+  "sellItems": []
+}

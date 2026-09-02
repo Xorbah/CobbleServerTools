@@ -1,0 +1,24 @@
+{
+  "id": "rival_npc",
+  "npcName": "Rival",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/blue.png",
+  "dialogId": "",
+  "seekPlayer": true,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": false,
+  "lookAtPlayer": true,
+  "battleType": "NOT_SET",
+  "moneyReward": 0,
+  "rewardItemId": "",
+  "onVictoryCommand": "",
+  "rewardResetAlways": false,
+  "rematchCooldownSeconds": 0,
+  "teams": {
+    "fire": [],
+    "water": [],
+    "grass": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "viridian_mart",
+  "skin": "cobbleservertools:bootstrap/mart.png",
+  "seekPlayer": false,
+  "lockPosition": true,
+  "lookAtPlayer": true,
+  "shopItems": [
+    {"item": "cobblemon:poke_ball", "price": 200, "description": "A device for catching wild Pokemon."},
+    {"item": "cobblemon:potion", "price": 300, "description": "Restores HP to a Pokemon."},
+    {"item": "cobblemon:antidote", "price": 100, "description": "Cures poisoning."},
+    {"item": "cobblemon:paralyze_heal", "price": 200, "description": "Cures paralysis."},
+    {"item": "cobblemon:burn_heal", "price": 250, "description": "Cures a burn."}
+  ],
+  "sellItems": [
+    {"item": "cobblemon:poke_ball", "price": 100, "description": "A device for catching wild Pokemon."},
+    {"item": "cobblemon:potion", "price": 150, "description": "Restores HP to a Pokemon."},
+    {"item": "cobblemon:antidote", "price": 50, "description": "Cures poisoning."},
+    {"item": "cobblemon:paralyze_heal", "price": 100, "description": "Cures paralysis."},
+    {"item": "cobblemon:burn_heal", "price": 125, "description": "Cures a burn."}
+  ]
+}

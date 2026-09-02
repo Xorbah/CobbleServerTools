@@ -1,0 +1,7 @@
+Run & Bun AI integration
+-------------------------
+CobbleServerTools RC21 embeds a relocated copy of the loader-agnostic Run & Bun AI common classes
+from the user-supplied rbrctai Fabric artifact. Its fabric.mod.json identifies the project as
+"Cobblemon Run and Bun AI", author "Surilexa", license "MIT", mod id "rbrctai".
+Fabric entrypoint classes and Fabric metadata are not used as a CobbleServerTools runtime dependency.
+The classes are relocated under net.cobbleservertools.compat.rct.runbun to avoid collisions.

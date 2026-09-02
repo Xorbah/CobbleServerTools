@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="cobbleservertools"
+version="1.0.0-rc28"
+displayName="CobbleServerTools"
+logoFile="assets/cobbleservertools/icon.png"
+authors="CobbleServerTools contributors; see LICENSE for copyright attribution"
+description='''
+NPCs for Cobblemon: Battle, Rival, Dialog, Move Tutor, Mart, and Trader NPCs.
+Server tools and NPC editors for Minecraft 1.21.1 and Cobblemon.
+'''
+
+[[dependencies.cobbleservertools]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.235,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.cobbleservertools]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.cobbleservertools]]
+modId="cobblemon"
+type="required"
+versionRange="[1.7.3,1.8.0)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.cobbleservertools]]
+modId="kotlinforforge"
+type="required"
+versionRange="[5.11.0,)"
+ordering="BEFORE"
+side="BOTH"

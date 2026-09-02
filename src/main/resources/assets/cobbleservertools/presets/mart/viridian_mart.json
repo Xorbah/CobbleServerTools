@@ -1,0 +1,24 @@
+{
+  "id": "cobbleservertools:viridian_mart",
+  "displayName": "Viridian City Poke Mart",
+  "npcType": "mart",
+  "metadata": {
+    "region": "kanto",
+    "location": "viridian_city",
+    "role": "shopkeeper",
+    "tags": ["pokemart", "early_game", "pokeballs", "medicine"]
+  },
+  "configuration": {
+    "npcName": "Poke Mart Clerk",
+    "npcSize": 0.9375,
+    "npcType": "WIDE",
+    "skin": "cobbleservertools:bootstrap/mart.png",
+    "dialogId": "",
+    "seekPlayer": false,
+    "seekRange": 8,
+    "sitting": false,
+    "lockPosition": true,
+    "lookAtPlayer": true,
+    "martPreset": "viridian_mart"
+  }
+}

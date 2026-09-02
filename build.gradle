@@ -1,0 +1,172 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.1.38'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_name
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+    exclude('**/*.bbmodel')
+    exclude('src/generated/**/.cache')
+}
+
+repositories {
+    maven { url = 'https://maven.neoforged.net/releases' }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter { includeGroup 'maven.modrinth' }
+    }
+    maven { url = 'https://thedarkcolour.github.io/KotlinForForge/' }
+    mavenCentral()
+}
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        workingDirectory project.layout.projectDirectory.dir('run').dir(name)
+        modSource project.sourceSets.main
+    }
+    client {}
+    server { argument '--nogui' }
+    data {
+        arguments.addAll '--mod', project.mod_id, '--all', '--output',
+                file('src/generated/resources/').absolutePath,
+                '--existing', file('src/main/resources/').absolutePath
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    // Optional runtime integration; compile against its public API without bundling it.
+    compileOnly 'maven.modrinth:rctapi:7SdU6Tqp'
+    implementation "net.neoforged:neoforge:${neo_version}"
+    def kotlinForForgeJar = file('libs/kotlinforforge-5.11.0-all.jar')
+    if (kotlinForForgeJar.exists()) {
+        implementation files(kotlinForForgeJar)
+    } else {
+        implementation 'thedarkcolour:kotlinforforge-neoforge:5.11.0'
+    }
+
+    // Official Cobblemon 1.7.3 NeoForge artifact on Modrinth Maven.
+    // Either official filename casing is accepted for offline development.
+    def cobblemonJar = [
+            file('libs/Cobblemon-neoforge-1.7.3+1.21.1.jar'),
+            file('libs/cobblemon-neoforge-1.7.3+1.21.1.jar')
+    ].find { it.exists() }
+    if (cobblemonJar != null) {
+        implementation files(cobblemonJar)
+    } else {
+        implementation 'maven.modrinth:MdwFAVRL:S1TrAn8c'
+    }
+}
+
+tasks.withType(ProcessResources).configureEach {
+    includeEmptyDirs = false
+    def replaceProperties = [
+            minecraft_version       : minecraft_version,
+            minecraft_version_range : minecraft_version_range,
+            neo_version             : neo_version,
+            loader_version_range    : loader_version_range,
+            mod_id                  : mod_id,
+            mod_name                : mod_name,
+            mod_license             : mod_license,
+            mod_version             : mod_version
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '1000']
+}
+
+tasks.named('jar', Jar).configure {
+    includeEmptyDirs = false
+    from('LICENSE') { into('META-INF') }
+    manifest.attributes('Implementation-Title': 'CobbleServerTools', 'Implementation-Version': project.version)
+}
+
+tasks.register('verifyIdentity') {
+    group = 'verification'
+    description = 'Check source and resource namespaces and parse every bundled JSON document.'
+    inputs.dir('src/main')
+    doLast {
+        def legacy = ['kanto' + 'npcs', 'kanto' + 'npc', 'net.' + 'crulim', 'neoforge-' + 'port']
+        def json = new groovy.json.JsonSlurper()
+        fileTree('src/main').files.findAll { it.isFile() }.each { f ->
+            def relative = project.relativePath(f).toLowerCase(Locale.ROOT)
+            if (legacy.any { relative.contains(it) }) throw new GradleException("Old namespace in path: ${f}")
+            if (f.name.endsWith('.json') || f.name.endsWith('.mcmeta')) json.parse(f, 'UTF-8')
+            if (f.name ==~ /.*\.(java|json|toml|mcmeta|txt)/) {
+                def content = f.getText('UTF-8').toLowerCase(Locale.ROOT)
+                if (legacy.any { content.contains(it) }) throw new GradleException("Old identity in ${f}")
+            }
+        }
+        def metadata = file('src/main/resources/META-INF/neoforge.mods.toml').text
+        if (!metadata.contains('modId="cobbleservertools"') || !metadata.contains('displayName="CobbleServerTools"')) {
+            throw new GradleException('Mod metadata does not match the project identity')
+        }
+    }
+}
+tasks.named('check') { dependsOn 'verifyIdentity' }
+
+tasks.register('verifyArtifactIdentity') {
+    dependsOn 'jar'
+    group = 'verification'
+    inputs.file(tasks.named('jar').flatMap { it.archiveFile })
+    doLast {
+        def legacy = ['kanto' + 'npc', 'net/' + 'crulim', 'neoforge-' + 'port']
+        def archive = tasks.named('jar').get().archiveFile.get().asFile
+        new java.util.zip.ZipFile(archive).withCloseable { zip ->
+            zip.entries().each { entry ->
+                def name = entry.name.toLowerCase(Locale.ROOT)
+                if (legacy.any { name.contains(it) }) throw new GradleException("Old namespace in JAR entry: ${name}")
+                if (!entry.directory && (name.endsWith('.class') || name.endsWith('.json') || name.endsWith('.toml'))) {
+                    def content = new String(zip.getInputStream(entry).bytes, java.nio.charset.StandardCharsets.ISO_8859_1).toLowerCase(Locale.ROOT)
+                    if (legacy.any { content.contains(it) }) throw new GradleException("Old identity in JAR: ${name}")
+                }
+            }
+            if (zip.getEntry('net/cobbleservertools/CobbleServerTools.class') == null) throw new GradleException('Missing mod entrypoint')
+            if (zip.getEntry('META-INF/LICENSE') == null) throw new GradleException('Missing license')
+        }
+    }
+}
+tasks.named('check') { dependsOn 'verifyArtifactIdentity' }
+
+tasks.register('compileVariantTests', JavaCompile) {
+    source fileTree('tools/variant-tests') { include '**/*.java' }
+    source 'src/main/java/net/cobbleservertools/client/gui/RoamingPokemonVariantSupport.java'
+    classpath = files()
+    destinationDirectory = layout.buildDirectory.dir('variant-tests')
+    javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(21) }
+}
+['Rc27VariantSupportTest', 'Rc28DynamicDiscoveryTest'].each { testClass ->
+    def testTask = tasks.register("run${testClass}", JavaExec) {
+        dependsOn 'compileVariantTests'
+        classpath = files(layout.buildDirectory.dir('variant-tests'))
+        mainClass = testClass
+        javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(21) }
+    }
+    tasks.named('check') { dependsOn testTask }
+}

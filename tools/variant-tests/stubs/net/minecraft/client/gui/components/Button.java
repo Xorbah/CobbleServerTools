@@ -1,0 +1,2 @@
+package net.minecraft.client.gui.components; import net.minecraft.client.gui.components.events.GuiEventListener; import net.minecraft.network.chat.Component;
+public class Button implements GuiEventListener { public boolean active=true, visible=true; public interface OnPress { void onPress(Button b); } public static Builder builder(Component c, OnPress p){return new Builder();} public void setMessage(Component c){} public static class Builder { public Builder bounds(int x,int y,int w,int h){return this;} public Button build(){return new Button();} } }

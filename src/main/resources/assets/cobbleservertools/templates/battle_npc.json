@@ -1,0 +1,20 @@
+{
+  "id": "battle_npc",
+  "npcName": "Battle NPC",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/yougster.png",
+  "dialogId": "",
+  "seekPlayer": true,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": false,
+  "lookAtPlayer": true,
+  "battleType": "NOT_SET",
+  "moneyReward": 0,
+  "rewardItemId": "",
+  "onVictoryCommand": "",
+  "rewardResetAlways": false,
+  "rematchCooldownSeconds": 0,
+  "team": []
+}

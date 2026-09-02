@@ -1,0 +1,14 @@
+{
+  "id": "mart_npc",
+  "npcName": "Poke Mart Clerk",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/mart.png",
+  "dialogId": "",
+  "seekPlayer": false,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": true,
+  "lookAtPlayer": true,
+  "martPreset": "viridian_mart"
+}

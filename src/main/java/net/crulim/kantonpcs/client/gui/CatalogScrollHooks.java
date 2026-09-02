@@ -1,3 +1,0 @@
-package net.crulim.kantonpcs.client.gui;
-import java.lang.reflect.*; import java.util.*;
-public final class CatalogScrollHooks { private CatalogScrollHooks(){} public static boolean mouseScrolled(Object s,double dy){if(dy==0)return false;try{Field pf=s.getClass().getDeclaredField("page"),rf=s.getClass().getDeclaredField("results");pf.setAccessible(true);rf.setAccessible(true);int page=pf.getInt(s);int size=((List<?>)rf.get(s)).size();int max=Math.max(0,(size-1)/10);int next=dy>0?Math.max(0,page-1):Math.min(max,page+1);if(next==page)return false;pf.setInt(s,next);Method m=s.getClass().getDeclaredMethod("refresh");m.setAccessible(true);m.invoke(s);return true;}catch(Throwable t){return false;}} }

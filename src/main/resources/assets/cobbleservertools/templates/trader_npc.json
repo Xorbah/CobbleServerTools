@@ -1,0 +1,21 @@
+{
+  "id": "trader_npc",
+  "npcName": "Pokemon Trader",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/gentleman.png",
+  "dialogId": "",
+  "seekPlayer": false,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": true,
+  "lookAtPlayer": true,
+  "requestSpecies": "",
+  "offerSpecies": "",
+  "offerLevel": 10,
+  "offerGender": "random",
+  "unlimitedTrades": false,
+  "rewardItemId": "",
+  "onVictoryCommand": "",
+  "rewardResetAlways": false
+}

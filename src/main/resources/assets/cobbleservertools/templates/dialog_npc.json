@@ -1,0 +1,17 @@
+{
+  "id": "dialog_npc",
+  "npcName": "NPC",
+  "npcSize": 0.9375,
+  "npcType": "WIDE",
+  "skin": "cobbleservertools:bootstrap/random man.png",
+  "dialogId": "",
+  "seekPlayer": false,
+  "seekRange": 8,
+  "sitting": false,
+  "lockPosition": true,
+  "lookAtPlayer": true,
+  "healAfterDialog": false,
+  "rewardItemId": "",
+  "onVictoryCommand": "",
+  "rewardResetAlways": false
+}

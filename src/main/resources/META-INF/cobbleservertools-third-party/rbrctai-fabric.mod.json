@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "rbrctai",
+  "version": "0.15.0-beta",
+  "name": "Cobblemon Run and Bun AI",
+  "description": "An addon for RCTApi that provides an implementation of the battle AI from PokÃ¨mon Run and Bun.",
+  "authors": [
+    "Surilexa"
+  ],
+  "license": "MIT",
+  "icon": "assets/rbrctai/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.gitlab.surilexa.rbrctai.fabric.FabricCommon"
+    ],
+    "client": [
+      "com.gitlab.surilexa.rbrctai.fabric.client.FabricClient"
+    ]
+  },
+  "mixins": [
+    "rbrctai.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.2",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.2",
+    "cobblemon": ">=1.7",
+    "rctapi": ">=0.14.0-beta",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
