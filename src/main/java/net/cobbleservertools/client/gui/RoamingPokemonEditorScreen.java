@@ -6,6 +6,7 @@ import com.cobblemon.mod.common.client.gui.summary.widgets.ModelWidget;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import net.cobbleservertools.network.payload.UpdateNpcProfilePayload;
 import net.cobbleservertools.roaming.SizeVariationCompat;
+import net.cobbleservertools.roaming.PokerusCompat;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
@@ -108,10 +109,14 @@ public final class RoamingPokemonEditorScreen extends Screen {
             refreshPokemonPreview();
         }).bounds(l + 220, t + 30, 100, 20).build());
 
-        addRenderableWidget(Button.builder(Component.literal("Pokerus: " + yes(pokerus)), b -> {
-            pokerus = !pokerus;
-            b.setMessage(Component.literal("Pokerus: " + yes(pokerus)));
-        }).bounds(l + 330, t + 30, 110, 20).build());
+        if (PokerusCompat.isLoaded()) {
+            addRenderableWidget(Button.builder(Component.literal("Pokérus: " + yes(pokerus)), b -> {
+                pokerus = !pokerus;
+                b.setMessage(Component.literal("Pokérus: " + yes(pokerus)));
+            }).bounds(l + 330, t + 30, 110, 20).build());
+        } else {
+            pokerus = false;
+        }
 
         for (int i = 0; i < 4; i++) {
             final int n = i;
@@ -232,7 +237,7 @@ public final class RoamingPokemonEditorScreen extends Screen {
         t.putString("RoamingNature", nature);
         for (int i = 0; i < 4; i++) t.putString("RoamingMove" + (i + 1), moves[i]);
         t.putBoolean("RoamingShiny", shiny);
-        t.putBoolean("RoamingPokerus", pokerus);
+        t.putBoolean("RoamingPokerus", pokerus && PokerusCompat.isLoaded());
         t.putFloat("RoamingSize", fval(size, 1f, .1f, 10f));
         for (int i = 0; i < 6; i++) {
             t.putInt("RoamingIV" + i, ival(iv[i], 31, 0, 31));

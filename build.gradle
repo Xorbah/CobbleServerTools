@@ -170,3 +170,32 @@ tasks.register('compileVariantTests', JavaCompile) {
     }
     tasks.named('check') { dependsOn testTask }
 }
+
+tasks.register('compilePokerusTests', JavaCompile) {
+    source fileTree('tools/pokerus-tests') { include '**/*.java'; exclude 'optional/**' }
+    source 'src/main/java/net/cobbleservertools/roaming/PokerusCompat.java'
+    classpath = files()
+    destinationDirectory = layout.buildDirectory.dir('pokerus-tests')
+    javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(21) }
+}
+tasks.register('compilePokerusTestApi', JavaCompile) {
+    dependsOn 'compilePokerusTests'
+    source fileTree('tools/pokerus-tests/optional') { include '**/*.java' }
+    classpath = files(layout.buildDirectory.dir('pokerus-tests'))
+    destinationDirectory = layout.buildDirectory.dir('pokerus-test-api')
+    javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(21) }
+}
+['absent', 'present', 'unavailable'].each { scenario ->
+    def testTask = tasks.register("testPokerus${scenario.capitalize()}", JavaExec) {
+        dependsOn 'compilePokerusTests'
+        classpath = files(layout.buildDirectory.dir('pokerus-tests'))
+        if (scenario == 'present') {
+            dependsOn 'compilePokerusTestApi'
+            classpath += files(layout.buildDirectory.dir('pokerus-test-api'))
+        }
+        mainClass = 'PokerusCompatTest'
+        args scenario
+        javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(21) }
+    }
+    tasks.named('check') { dependsOn testTask }
+}

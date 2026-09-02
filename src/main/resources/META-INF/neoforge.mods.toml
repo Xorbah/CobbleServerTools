@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="cobbleservertools"
-version="1.0.0-rc28"
+version="1.0.0-rc28.1"
 displayName="CobbleServerTools"
 logoFile="assets/cobbleservertools/icon.png"
 authors="CobbleServerTools contributors; see LICENSE for copyright attribution"

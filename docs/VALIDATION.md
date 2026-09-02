@@ -1,5 +1,11 @@
 # Verification status
 
+## Pokérus update — 2026-09-02
+
+The optional integration was checked against the public method signatures and implementation in the supplied `pokerus-neoforge-1.7.3-1.1.0.jar`. Regression tests exercise an absent sidemod with no API classes on the classpath, the matching API contract, disabled requests, rejected infection, API exceptions, and an installed mod with missing API classes. These isolated tests do not replace an in-game test with the sidemod and its required dependencies.
+
+## RC28 reconstruction
+
 Verified on 2026-09-01 using Java 21, Gradle 8.14.3, NeoForge 21.1.235, and Cobblemon 1.7.3.
 
 - Full `gradle build`: PASS.
