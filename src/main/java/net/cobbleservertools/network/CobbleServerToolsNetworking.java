@@ -36,6 +36,7 @@ import net.cobbleservertools.network.payload.SyncPlayerMoneyPayload;
 import net.cobbleservertools.network.payload.TraderActionPayload;
 import net.cobbleservertools.network.payload.TutorActionPayload;
 import net.cobbleservertools.network.payload.UpdateNpcProfilePayload;
+import net.cobbleservertools.network.payload.RoamingPresetListPayload;
 import net.cobbleservertools.roaming.RoamingPokemonManager;
 import net.cobbleservertools.util.NpcPermissions;
 import net.minecraft.nbt.CompoundTag;
@@ -48,14 +49,14 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public final class CobbleServerToolsNetworking {
-   public static final String PROTOCOL_VERSION = "6";
+   public static final String PROTOCOL_VERSION = "7";
    private static final double MAX_EDITOR_DISTANCE_SQUARED = 4096.0;
 
    private CobbleServerToolsNetworking() {
    }
 
    public static void registerPayloads(RegisterPayloadHandlersEvent var0) {
-      PayloadRegistrar var1 = var0.registrar("6");
+      PayloadRegistrar var1 = var0.registrar("7");
       var1.playToClient(NpcSnapshotPayload.TYPE, NpcSnapshotPayload.STREAM_CODEC, ClientPayloadBridge::handleSnapshot);
       var1.playToClient(OpenNpcDialogPayload.TYPE, OpenNpcDialogPayload.STREAM_CODEC, ClientPayloadBridge::handleDialog);
       var1.playToClient(OpenMartPayload.TYPE, OpenMartPayload.STREAM_CODEC, ClientPayloadBridge::handleMart);
@@ -67,6 +68,7 @@ public final class CobbleServerToolsNetworking {
       var1.playToClient(SyncPlayerMoneyPayload.TYPE, SyncPlayerMoneyPayload.STREAM_CODEC, ClientPayloadBridge::handleMoney);
       var1.playToClient(OpenNpcPresetBrowserPayload.TYPE, OpenNpcPresetBrowserPayload.STREAM_CODEC, ClientPayloadBridge::handlePresetOpen);
       var1.playToClient(NpcPresetSearchResultsPayload.TYPE, NpcPresetSearchResultsPayload.STREAM_CODEC, ClientPayloadBridge::handlePresetResults);
+      var1.playToClient(RoamingPresetListPayload.TYPE, RoamingPresetListPayload.STREAM_CODEC, ClientPayloadBridge::handleRoamingPresets);
       var1.playToServer(RequestNpcSnapshotPayload.TYPE, RequestNpcSnapshotPayload.STREAM_CODEC, CobbleServerToolsNetworking::handleSnapshotRequest);
       var1.playToServer(UpdateNpcProfilePayload.TYPE, UpdateNpcProfilePayload.STREAM_CODEC, CobbleServerToolsNetworking::handleProfileUpdate);
       var1.playToServer(NpcDialogChoicePayload.TYPE, NpcDialogChoicePayload.STREAM_CODEC, CobbleServerToolsNetworking::handleDialogChoice);

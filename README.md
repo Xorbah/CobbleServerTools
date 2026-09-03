@@ -4,7 +4,7 @@ Server tools and NPC editors for Minecraft 1.21.1, NeoForge 21.1.235+, and Cobbl
 
 - Mod ID and resource namespace: `cobbleservertools`
 - Java package: `net.cobbleservertools`
-- Version: `1.0.0-rc28.1`
+- Version: `1.0.0-rc28.2`
 - Java: 21
 
 Includes battle, rival, dialog, move-tutor, mart, trader, and roaming Pokémon NPCs; skin and preset browsers; and dynamic form/variant discovery.
@@ -13,7 +13,7 @@ Includes battle, rival, dialog, move-tutor, mart, trader, and roaming Pokémon N
 
 Run `./gradlew build` on Linux/macOS or `gradlew.bat build` on Windows. Artifacts are generated in `build/libs/`. Dependencies are downloaded by Gradle; do not copy compile stubs into a runtime installation.
 
-The latest artifact is [dist/CobbleServerTools-1.0.0-rc28.1.jar](dist/CobbleServerTools-1.0.0-rc28.1.jar). Install only one version. See [verification status](docs/VALIDATION.md) before installing it.
+The latest artifact is [dist/CobbleServerTools-1.0.0-rc28.2.jar](dist/CobbleServerTools-1.0.0-rc28.2.jar). Install only one version. See [verification status](docs/VALIDATION.md) before installing it.
 
 ## Optional Pokérus integration
 

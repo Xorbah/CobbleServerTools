@@ -24,6 +24,11 @@ public final class RoamingPokemonEditorScreen extends Screen {
     private String species = "suicune", nature = "hardy", form = "", variantAspects = "", variantProperties = "";
     private final String[] moves = {"", "", "", ""};
     private boolean shiny, pokerus;
+    private boolean spawnInFront;
+    private String levelValue="50", sizeValue="1.0", koValue="1800", migrateValue="600", dwellValue="20", cryValue="12";
+    private String dimensionValue="minecraft:overworld", xValue="0", zValue="0", radiusValue="128";
+    private final String[] ivValues={"31","31","31","31","31","31"}, evValues={"0","0","0","0","0","0"};
+    private int regionScroll;
     private EditBox level, size, koDelay, migrate, dwell, cry, dimension, rx, rz, radius;
     private final EditBox[] iv = new EditBox[6], ev = new EditBox[6];
     private final List<String> regions = new ArrayList<>();
@@ -84,7 +89,7 @@ public final class RoamingPokemonEditorScreen extends Screen {
             })
         ).bounds(l, t, 210, 20).build());
 
-        level = box(l + 220, t, 70, "Level", "50");
+        level = box(l + 220, t, 70, "Level", levelValue);
 
         addRenderableWidget(Button.builder(
             Component.literal("Variant/Form: " + RoamingPokemonVariantSupport.displayName(form, variantAspects, variantProperties)), b -> {
@@ -126,7 +131,7 @@ public final class RoamingPokemonEditorScreen extends Screen {
         }
 
         if (SizeVariationCompat.isLoaded()) {
-            size = box(l + 320, t + 70, 120, "Size scale", "1.0");
+            size = box(l + 320, t + 70, 120, "Size scale", sizeValue);
         } else {
             addRenderableWidget(Button.builder(Component.literal("Size: base game"), b -> {})
                 .bounds(l + 320, t + 70, 120, 20).build());
@@ -178,34 +183,45 @@ public final class RoamingPokemonEditorScreen extends Screen {
     }
 
     private void initStats() {
-        int l = width / 2 - 190, t = 48;
+        int l = width / 2 - 190, t = 38, step = Math.max(22, Math.min(34, (height - 82) / 6));
         String[] s = {"HP", "Atk", "Def", "SpA", "SpD", "Spe"};
         for (int i = 0; i < 6; i++) {
-            int y = t + i * 34;
-            iv[i] = box(l + 70, y, 90, "IV " + s[i], "31");
-            ev[i] = box(l + 250, y, 90, "EV " + s[i], "0");
+            int y = t + i * step;
+            iv[i] = box(l + 70, y, 90, "IV " + s[i], ivValues[i]);
+            ev[i] = box(l + 250, y, 90, "EV " + s[i], evValues[i]);
         }
     }
 
     private void initRoaming() {
         int l = width / 2 - 220, t = 36;
-        dimension = box(l, t, 190, "Dimension", "minecraft:overworld");
-        rx = box(l + 200, t, 70, "Center X", "0");
-        rz = box(l + 280, t, 70, "Center Z", "0");
-        radius = box(l + 360, t, 80, "Radius", "128");
+        dimension = box(l, t, 190, "Dimension", dimensionValue);
+        rx = box(l + 200, t, 70, "Center X", xValue);
+        rz = box(l + 280, t, 70, "Center Z", zValue);
+        radius = box(l + 360, t, 80, "Radius", radiusValue);
         addRenderableWidget(Button.builder(Component.literal("Add roaming area"), b -> {
             String r = dimension.getValue() + "," + rx.getValue() + "," + rz.getValue() + "," + radius.getValue();
             if (regions.size() < 16) regions.add(r);
+            capture(); regionScroll=Math.max(0,regions.size()-5);
             minecraft.setScreen(this);
         }).bounds(l, t + 30, 150, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Remove last area"), b -> {
             if (!regions.isEmpty()) regions.remove(regions.size() - 1);
+            capture(); regionScroll=Math.min(regionScroll,Math.max(0,regions.size()-5));
             minecraft.setScreen(this);
         }).bounds(l + 160, t + 30, 150, 20).build());
-        koDelay = box(l, t + 190, 100, "KO return sec", "1800");
-        migrate = box(l + 110, t + 190, 100, "Migrate sec", "600");
-        dwell = box(l + 220, t + 190, 100, "Reveal sec", "20");
-        cry = box(l + 330, t + 190, 100, "Cry sec", "12");
+        addRenderableWidget(Button.builder(Component.literal("Use my current position"), b -> usePlayerPosition(false))
+            .bounds(l + 320, t + 30, 120, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("Spawn directly in front: " + yes(spawnInFront)), b -> {
+            spawnInFront = !spawnInFront; b.setMessage(Component.literal("Spawn directly in front: " + yes(spawnInFront)));
+            if (spawnInFront) usePlayerPosition(true);
+        }).bounds(l, t + 58, 218, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("Load saved preset"), b -> requestPresets())
+            .bounds(l + 228, t + 58, 212, 20).build());
+        int timingY = Math.min(t + 190, height - 54);
+        koDelay = box(l, timingY, 100, "KO return sec", koValue);
+        migrate = box(l + 110, timingY, 100, "Migrate sec", migrateValue);
+        dwell = box(l + 220, timingY, 100, "Reveal sec", dwellValue);
+        cry = box(l + 330, timingY, 100, "Cry sec", cryValue);
     }
 
     private EditBox box(int x, int y, int w, String hint, String def) {
@@ -223,7 +239,43 @@ public final class RoamingPokemonEditorScreen extends Screen {
     }
 
     private void capture() {
-        // Existing RC22 persistence model retained. The preview itself owns no server state.
+        if (level != null) levelValue = level.getValue();
+        if (size != null) sizeValue = size.getValue();
+        for (int i=0;i<6;i++) { if(iv[i]!=null)ivValues[i]=iv[i].getValue(); if(ev[i]!=null)evValues[i]=ev[i].getValue(); }
+        if (dimension != null) dimensionValue=dimension.getValue();
+        if (rx != null) xValue=rx.getValue();
+        if (rz != null) zValue=rz.getValue();
+        if (radius != null) radiusValue=radius.getValue();
+        if (koDelay != null) koValue=koDelay.getValue();
+        if (migrate != null) migrateValue=migrate.getValue();
+        if (dwell != null) dwellValue=dwell.getValue();
+        if (cry != null) cryValue=cry.getValue();
+    }
+
+    private void usePlayerPosition(boolean inFront) {
+        if (minecraft.player == null || minecraft.level == null) return;
+        double x=minecraft.player.getX(), z=minecraft.player.getZ();
+        if(inFront){double yaw=Math.toRadians(minecraft.player.getYRot());x-=Math.sin(yaw)*3;z+=Math.cos(yaw)*3;}
+        dimension.setValue(minecraft.level.dimension().location().toString());
+        rx.setValue(String.format(Locale.ROOT,"%.1f",x)); rz.setValue(String.format(Locale.ROOT,"%.1f",z));
+        capture();
+    }
+
+    private void requestPresets() {
+        capture(); CompoundTag request=new CompoundTag(); request.putString("RoamingAction","request_presets");
+        PacketDistributor.sendToServer(new UpdateNpcProfilePayload(Integer.MIN_VALUE,request));
+    }
+
+    public void loadPreset(CompoundTag t) {
+        species=t.getString("RoamingSpecies"); form=t.getString("RoamingForm"); variantAspects=t.getString("RoamingAspects");
+        variantProperties=t.getString("RoamingVariantProperties"); nature=t.getString("RoamingNature"); shiny=t.getBoolean("RoamingShiny"); pokerus=t.getBoolean("RoamingPokerus")&&PokerusCompat.isLoaded();
+        levelValue=Integer.toString(t.getInt("RoamingLevel")); sizeValue=Float.toString(t.getFloat("RoamingSize"));
+        for(int i=0;i<6;i++){ivValues[i]=Integer.toString(t.getInt("RoamingIV"+i));evValues[i]=Integer.toString(t.getInt("RoamingEV"+i));}
+        for(int i=0;i<4;i++)moves[i]=t.getString("RoamingMove"+(i+1));
+        regions.clear(); for(String value:t.getString("RoamingRegions").split(";"))if(!value.isBlank())regions.add(value);
+        koValue=Integer.toString(t.getInt("RoamingKoRespawnSeconds"));migrateValue=Integer.toString(t.getInt("RoamingMigrationSeconds"));
+        dwellValue=Integer.toString(t.getInt("RoamingRevealSeconds"));cryValue=Integer.toString(t.getInt("RoamingCrySeconds"));
+        regionScroll=0; spawnInFront=false; page=0;
     }
 
     private void save() {
@@ -248,6 +300,7 @@ public final class RoamingPokemonEditorScreen extends Screen {
         t.putInt("RoamingMigrationSeconds", ival(migrate, 600, 30, 86400));
         t.putInt("RoamingRevealSeconds", ival(dwell, 20, 1, 3600));
         t.putInt("RoamingCrySeconds", ival(cry, 12, 2, 600));
+        t.putBoolean("RoamingSpawnInFront", spawnInFront);
         PacketDistributor.sendToServer(new UpdateNpcProfilePayload(Integer.MIN_VALUE, t));
         minecraft.setScreen(parent);
     }
@@ -263,6 +316,10 @@ public final class RoamingPokemonEditorScreen extends Screen {
     }
 
     private static String yes(boolean b) { return b ? "ON" : "OFF"; }
+
+    @Override public boolean mouseScrolled(double x,double y,double sx,double sy){
+        if(page==2&&regions.size()>5){int old=regionScroll;if(sy>0)regionScroll=Math.max(0,regionScroll-1);if(sy<0)regionScroll=Math.min(regions.size()-5,regionScroll+1);return old!=regionScroll||super.mouseScrolled(x,y,sx,sy);}return super.mouseScrolled(x,y,sx,sy);
+    }
 
     @Override
     public void renderBackground(GuiGraphics g, int x, int y, float p) {
@@ -292,12 +349,26 @@ public final class RoamingPokemonEditorScreen extends Screen {
         if (page == 2) {
             int yy = 104;
             g.drawString(font, "Roaming areas (migration rotates between these):", width / 2 - 220, 86, 0xFFFFFF);
-            for (int i = 0; i < Math.min(5, regions.size()); i++)
-                g.drawString(font, (i + 1) + ". " + regions.get(i), width / 2 - 220, yy + i * 16, 0xB0B0B0);
+            for (int i = regionScroll; i < Math.min(regionScroll+5, regions.size()); i++) {
+                String line=(i+1)+". "+regions.get(i);if(line.length()>38)line=line.substring(0,35)+"…";
+                g.drawString(font,line,width/2-220,yy+(i-regionScroll)*16,0xB0B0B0);
+            }
             if (regions.isEmpty())
                 g.drawString(font, "Add at least one area before saving.", width / 2 - 220, yy, 0xFF8080);
+            if(regions.size()>5)g.drawString(font,"Scroll areas  "+(regionScroll+1)+"–"+Math.min(regions.size(),regionScroll+5)+" / "+regions.size(),width/2-220,yy+82,0xAAAAAA);
+            drawAreaPreview(g);
         }
     }
+
+    private void drawAreaPreview(GuiGraphics g){
+        int left=width/2+45,top=96,w=172,h=82;g.fill(left,top,left+w,top+h,0xD0202020);g.renderOutline(left,top,w,h,0xFF777777);
+        double cx=parse(rx,xValue),cz=parse(rz,zValue),rad=Math.max(1,parse(radius,radiusValue));
+        int centerX=left+w/2,centerY=top+h/2;int rr=(int)Math.min(34,Math.max(4,rad/4));g.renderOutline(centerX-rr,centerY-rr,rr*2,rr*2,0xFF55AAFF);g.fill(centerX-2,centerY-2,centerX+3,centerY+3,0xFFFFFF55);
+        if(minecraft.player!=null){double scale=rr/rad;int px=centerX+(int)((minecraft.player.getX()-cx)*scale),pz=centerY+(int)((minecraft.player.getZ()-cz)*scale);if(px>=left&&px<left+w&&pz>=top&&pz<top+h)g.fill(px-2,pz-2,px+3,pz+3,0xFF55FF55);}
+        g.drawCenteredString(font,"Live area: X "+Math.round(cx)+" Z "+Math.round(cz)+" r="+Math.round(rad),left+w/2,top+4,0xFFFFFF);
+        g.drawString(font,"yellow=center  green=you",left+8,top+h-12,0xAAAAAA);
+    }
+    private static double parse(EditBox box,String fallback){try{return Double.parseDouble((box==null?fallback:box.getValue()).trim());}catch(Exception e){return 0;}}
 
     @Override
     public boolean isPauseScreen() { return false; }

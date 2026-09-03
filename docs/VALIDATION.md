@@ -1,5 +1,9 @@
 # Verification status
 
+## Roaming workflow update — 2026-09-03
+
+The RC28.2 full Gradle build, identity checks, dynamic form tests, and optional Pokérus contract tests pass. The responsive roaming editor, live area visualization, server-backed preset round-trip, and direct-in-front placement still require an in-game client/server acceptance test.
+
 ## Pokérus update — 2026-09-02
 
 The optional integration was checked against the public method signatures and implementation in the supplied `pokerus-neoforge-1.7.3-1.1.0.jar`. Regression tests exercise an absent sidemod with no API classes on the classpath, the matching API contract, disabled requests, rejected infection, API exceptions, and an installed mod with missing API classes. These isolated tests do not replace an in-game test with the sidemod and its required dependencies.

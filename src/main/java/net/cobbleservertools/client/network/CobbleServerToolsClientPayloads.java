@@ -7,6 +7,8 @@ import net.cobbleservertools.client.gui.NpcDialogScreen;
 import net.cobbleservertools.client.gui.NpcPresetBrowserScreen;
 import net.cobbleservertools.client.gui.NpcProfileEditorScreen;
 import net.cobbleservertools.client.gui.TraderScreen;
+import net.cobbleservertools.client.gui.RoamingPokemonEditorScreen;
+import net.cobbleservertools.client.gui.RoamingPresetBrowserScreen;
 import net.cobbleservertools.client.state.ClientMoneyState;
 import net.cobbleservertools.entity.AbstractCobbleNpcEntity;
 import net.cobbleservertools.network.ClientPayloadBridge;
@@ -49,6 +51,12 @@ public final class CobbleServerToolsClientPayloads {
          var0 -> Minecraft.getInstance().setScreen(new NpcPresetBrowserScreen(var0)),
          var0 -> Minecraft.getInstance().setScreen(new NpcPresetBrowserScreen(var0))
       );
+      ClientPayloadBridge.installRoamingPresetHandler(payload -> {
+         Minecraft mc = Minecraft.getInstance();
+         if (mc.screen instanceof RoamingPokemonEditorScreen editor) {
+            mc.setScreen(new RoamingPresetBrowserScreen(editor, payload.presets()));
+         }
+      });
    }
 
    private static void handleSnapshot(NpcSnapshotPayload var0) {

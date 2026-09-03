@@ -13,6 +13,7 @@ import net.cobbleservertools.network.payload.OpenNpcPresetBrowserPayload;
 import net.cobbleservertools.network.payload.OpenTraderPayload;
 import net.cobbleservertools.network.payload.OpenTutorPayload;
 import net.cobbleservertools.network.payload.SyncPlayerMoneyPayload;
+import net.cobbleservertools.network.payload.RoamingPresetListPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public final class ClientPayloadBridge {
@@ -27,6 +28,7 @@ public final class ClientPayloadBridge {
    private static volatile Consumer<SyncPlayerMoneyPayload> moneyHandler = var0 -> {};
    private static volatile Consumer<OpenNpcPresetBrowserPayload> presetOpenHandler = var0 -> {};
    private static volatile Consumer<NpcPresetSearchResultsPayload> presetResultsHandler = var0 -> {};
+   private static volatile Consumer<RoamingPresetListPayload> roamingPresetHandler = var0 -> {};
 
    private ClientPayloadBridge() {
    }
@@ -59,6 +61,10 @@ public final class ClientPayloadBridge {
    public static void installPresetHandlers(Consumer<OpenNpcPresetBrowserPayload> var0, Consumer<NpcPresetSearchResultsPayload> var1) {
       presetOpenHandler = Objects.requireNonNull(var0, "open");
       presetResultsHandler = Objects.requireNonNull(var1, "results");
+   }
+
+   public static void installRoamingPresetHandler(Consumer<RoamingPresetListPayload> handler) {
+      roamingPresetHandler = Objects.requireNonNull(handler, "roamingPresetHandler");
    }
 
    public static void handleSnapshot(NpcSnapshotPayload var0, IPayloadContext var1) {
@@ -103,5 +109,9 @@ public final class ClientPayloadBridge {
 
    public static void handlePresetResults(NpcPresetSearchResultsPayload var0, IPayloadContext var1) {
       var1.enqueueWork(() -> presetResultsHandler.accept(var0));
+   }
+
+   public static void handleRoamingPresets(RoamingPresetListPayload payload, IPayloadContext context) {
+      context.enqueueWork(() -> roamingPresetHandler.accept(payload));
    }
 }

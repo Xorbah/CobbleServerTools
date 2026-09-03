@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-rc28.2
+
+- Added a live top-down roaming-area editor with current-position capture and a direct-in-front spawn option.
+- Generated roaming Pokémon are reusable server-backed presets and can be loaded from a scrollable preset browser.
+- Roaming area and preset lists scroll when their contents exceed the GUI; editor layouts stay inside short GUI borders.
+- Fixed roaming editor values being lost while changing pages.
+
 ## 1.0.0-rc28.1 — optional Pokérus integration
 
 - Hide the roaming Pokémon Pokérus toggle unless the `pokerus` sidemod is installed.
