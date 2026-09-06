@@ -227,7 +227,7 @@ public final class RoamingPokemonVariantScreen extends Screen {
         if (!showPreview) return;
         try {
             preview = new ModelWidget(previewX + 2, previewY + 20, previewW - 4, Math.max(60, previewH - 24),
-                buildPreview(), 2.0F, 325F, -10.0D, true, false);
+                buildPreview(), 2.0F, 325F, -10.0D, true, false, 15);
             addRenderableWidget(preview);
         } catch (Throwable ignored) { preview = null; }
     }

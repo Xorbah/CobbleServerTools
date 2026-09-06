@@ -154,7 +154,7 @@ public final class RoamingPokemonEditorScreen extends Screen {
                     previewW - 4, widgetH,
                     renderable,
                     2.15F, 325F, -10.0D,
-                    true, false
+                    true, false, 15
                 );
                 addRenderableWidget(pokemonPreview);
             } catch (Throwable ignored) {

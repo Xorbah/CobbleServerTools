@@ -89,8 +89,8 @@ public final class RoamingPokemonVariantSupport {
                     if (!(provider instanceof ChoiceSpeciesFeatureProvider choice)) continue;
                     if (!choice.isAspect()) continue;
                     List<String> keys = choice.getKeys();
-                    List<String> values = choice.getChoices();
-                    List<String> aspects = choice.getAllAspects();
+                    List<? extends String> values = choice.getChoices();
+                    List<? extends String> aspects = choice.getAllAspects();
                     if (keys == null || keys.isEmpty() || values == null || values.isEmpty()) continue;
                     String key = cleanPropertyKey(keys.get(0));
                     if (key.isBlank()) continue;

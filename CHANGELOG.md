@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-rc29
+
+- Migrated the build and runtime dependency contract to Cobblemon 1.8.0 for Minecraft 1.21.1 NeoForge.
+- Updated Cobblemon model previews for the new explicit block-light constructor parameter.
+- Updated dynamic species-feature discovery for Cobblemon 1.8's covariant choice/aspect collections.
+- Aligned the development KotlinForForge dependency with Cobblemon 1.8.0's 5.10.0 toolchain.
+
 ## 1.0.0-rc28.2
 
 - Added a live top-down roaming-area editor with current-position capture and a direct-in-front spawn option.

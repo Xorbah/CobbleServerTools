@@ -1,5 +1,9 @@
 # Verification status
 
+## Cobblemon 1.8 migration — 2026-09-06
+
+RC29 compiles directly against the official `Cobblemon-neoforge-1.8.0+1.21.1.jar`. The migration updates the model-widget constructor and dynamic species-feature collection types changed by 1.8. The full Gradle build, artifact identity checks, variant discovery tests, and isolated Pokérus compatibility tests pass. A live Minecraft client/server acceptance test has not been run.
+
 ## Roaming workflow update — 2026-09-03
 
 The RC28.2 full Gradle build, identity checks, dynamic form tests, and optional Pokérus contract tests pass. The responsive roaming editor, live area visualization, server-backed preset round-trip, and direct-in-front placement still require an in-game client/server acceptance test.

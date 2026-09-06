@@ -1,10 +1,10 @@
 # CobbleServerTools
 
-Server tools and NPC editors for Minecraft 1.21.1, NeoForge 21.1.235+, and Cobblemon 1.7.3.
+Server tools and NPC editors for Minecraft 1.21.1, NeoForge 21.1.235+, and Cobblemon 1.8.0.
 
 - Mod ID and resource namespace: `cobbleservertools`
 - Java package: `net.cobbleservertools`
-- Version: `1.0.0-rc28.2`
+- Version: `1.0.0-rc29`
 - Java: 21
 
 Includes battle, rival, dialog, move-tutor, mart, trader, and roaming Pokémon NPCs; skin and preset browsers; and dynamic form/variant discovery.
@@ -13,13 +13,13 @@ Includes battle, rival, dialog, move-tutor, mart, trader, and roaming Pokémon N
 
 Run `./gradlew build` on Linux/macOS or `gradlew.bat build` on Windows. Artifacts are generated in `build/libs/`. Dependencies are downloaded by Gradle; do not copy compile stubs into a runtime installation.
 
-The latest artifact is [dist/CobbleServerTools-1.0.0-rc28.2.jar](dist/CobbleServerTools-1.0.0-rc28.2.jar). Install only one version. See [verification status](docs/VALIDATION.md) before installing it.
+The latest artifact is [dist/CobbleServerTools-1.0.0-rc29.jar](dist/CobbleServerTools-1.0.0-rc29.jar). Install only one version. See [verification status](docs/VALIDATION.md) before installing it.
 
 ## Optional Pokérus integration
 
 The roaming Pokémon creation screen shows the Pokérus toggle only when timinc's `pokerus` sidemod is installed on the client. Enabling it calls that sidemod's infection API when the server creates the Pokémon, including its normal strain, duration, marks, and aspects. Install the sidemod and its required dependencies on the server as well. Without the sidemod, the option is hidden and the server does not apply any fake infection flag.
 
-The integration targets the supplied NeoForge 1.7.3 / 1.1.0 sidemod API. The sidemod is not bundled with CobbleServerTools.
+The integration targets the supplied Pokérus API contract. The old `pokerus-neoforge-1.7.3-1.1.0.jar` itself declares Cobblemon 1.7.3 and must not be installed in a Cobblemon 1.8 pack; install a Cobblemon 1.8-compatible Pokérus release when one is available. The sidemod is not bundled with CobbleServerTools.
 
 ## Compatibility warning
 

@@ -58,23 +58,23 @@ dependencies {
     // Optional runtime integration; compile against its public API without bundling it.
     compileOnly 'maven.modrinth:rctapi:7SdU6Tqp'
     implementation "net.neoforged:neoforge:${neo_version}"
-    def kotlinForForgeJar = file('libs/kotlinforforge-5.11.0-all.jar')
+    def kotlinForForgeJar = file('libs/kotlinforforge-5.10.0-all.jar')
     if (kotlinForForgeJar.exists()) {
         implementation files(kotlinForForgeJar)
     } else {
-        implementation 'thedarkcolour:kotlinforforge-neoforge:5.11.0'
+        implementation 'thedarkcolour:kotlinforforge-neoforge:5.10.0'
     }
 
-    // Official Cobblemon 1.7.3 NeoForge artifact on Modrinth Maven.
+    // Official Cobblemon 1.8.0 NeoForge artifact on Modrinth Maven.
     // Either official filename casing is accepted for offline development.
     def cobblemonJar = [
-            file('libs/Cobblemon-neoforge-1.7.3+1.21.1.jar'),
-            file('libs/cobblemon-neoforge-1.7.3+1.21.1.jar')
+            file('libs/Cobblemon-neoforge-1.8.0+1.21.1.jar'),
+            file('libs/cobblemon-neoforge-1.8.0+1.21.1.jar')
     ].find { it.exists() }
     if (cobblemonJar != null) {
         implementation files(cobblemonJar)
     } else {
-        implementation 'maven.modrinth:MdwFAVRL:S1TrAn8c'
+        implementation 'maven.modrinth:MdwFAVRL:2oL01rSF'
     }
 }
 
